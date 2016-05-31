@@ -10,8 +10,8 @@ output "vpc_id" {
   value = "${aws_vpc.mod.id}"
 }
 
-output "public_route_table_ids" {
-  value = "${join(",", aws_route_table.public.*.id)}"
+output "public_route_table_id" {
+  value = "${join(",", aws_route_table.public.id)}"
 }
 
 output "private_route_table_ids" {

@@ -17,14 +17,11 @@ resource "aws_internet_gateway" "mod" {
 
 resource "aws_route_table" "public" {
   vpc_id = "${aws_vpc.mod.id}"
-  count  = "${length(split(",", var.public_subnets))}"
-  tags {
-    Name = "${var.name}.public.${element(split(",", var.azs), count.index)}"
-  }
+  tags { Name = "${var.name}.public" }
 }
 
 resource "aws_route" "public_internet_gateway" {
-    route_table_id = "${element(aws_route_table.public.*.id, count.index)}"
+    route_table_id = "${aws_route_table.public.id}"
     destination_cidr_block = "0.0.0.0/0"
     gateway_id = "${aws_internet_gateway.mod.id}"
 }
@@ -65,9 +62,9 @@ resource "aws_route_table_association" "private" {
 }
 
 resource "aws_route_table_association" "public" {
-  subnet_id      = "${element(aws_subnet.public.*.id, count.index)}"
-  route_table_id = "${element(aws_route_table.public.*.id, count.index)}"
-  count          = "${length(split(",", var.public_subnets))}"
+  count = "${length(compact(split(",", var.public_subnets)))}" di
+  subnet_id = "${element(aws_subnet.public.*.id, count.index)}"
+  route_table_id = "${aws_route_table.public.id}"
 }
 
 #nat gateway
