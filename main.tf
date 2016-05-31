@@ -62,7 +62,7 @@ resource "aws_route_table_association" "private" {
 }
 
 resource "aws_route_table_association" "public" {
-  count = "${length(compact(split(",", var.public_subnets)))}" di
+  count = "${length(compact(split(",", var.public_subnets)))}"
   subnet_id = "${element(aws_subnet.public.*.id, count.index)}"
   route_table_id = "${aws_route_table.public.id}"
 }
