@@ -1,23 +1,21 @@
-output "private_subnets" {
-  value = "${join(",", aws_subnet.private.*.id)}"
+output "private" {
+  value = "${
+    formatlist(
+      "Private Subnet with CIDR %s is in availability zone %s",
+      aws_subnet.private.*.cidr_block,
+      aws_subnet.private.*.availability_zone
+    )}"
 }
 
-output "public_subnets" {
-  value = "${join(",", aws_subnet.public.*.id)}"
+output "public" {
+  value = "${
+    formatlist(
+      "Public Subnet with CIDR %s is in availability zone %s",
+      aws_subnet.public.*.cidr_block,
+      aws_subnet.public.*.availability_zone
+    )}"
 }
 
 output "vpc_id" {
-  value = "${aws_vpc.mod.id}"
-}
-
-output "public_route_table_id" {
-  value = "${join(",", aws_route_table.public.id)}"
-}
-
-output "private_route_table_ids" {
-  value = "${join(",", aws_route_table.private.*.id)}"
-}
-
-output "nat_eips" {
-  value = "${join(",", aws_eip.nat.*.public_ip)}"
+  value = "${aws_vpc.main.id}"
 }
